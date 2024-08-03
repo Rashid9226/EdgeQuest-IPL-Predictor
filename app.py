@@ -26,7 +26,7 @@ cities = ['Hyderabad', 'Bangalore', 'Mumbai', 'Indore', 'Kolkata', 'Delhi',
 pipe = pickle.load(open('EdgeQuest.pkl', 'rb'))
 
 st.title('Edge-Quest: IPL Predictor')
-st.image('Tata IPL 2022.jpg', use_column_width=True)
+st.image('TataIPL.jpg', use_column_width=True)
 
 # Layout for team and city selection
 col1, col2 = st.columns(2)
