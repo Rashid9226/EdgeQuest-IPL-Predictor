@@ -26,7 +26,7 @@ cities = ['Hyderabad', 'Bangalore', 'Mumbai', 'Indore', 'Kolkata', 'Delhi',
 pipe = pickle.load(open('EdgeQuest.pkl', 'rb'))
 
 st.title('Edge-Quest: IPL Predictor')
-st.image('Tata IPL 2022.jpg')
+st.image('Tata IPL 2022.jpg', use_column_width=True)
 
 # Layout for team and city selection
 col1, col2 = st.columns(2)
@@ -58,69 +58,116 @@ if st.button('Predict Probability'):
     runs_left = target - score
     balls_left = 120 - (overs * 6)
     wickets_left = 10 - wickets
-    current_run_rate = score / overs if overs > 0 else 0
-    required_run_rate = (runs_left * 6) / balls_left if balls_left > 0 else 0
+    current_run_rate = score / (overs + 1e-9)  # Avoid division by zero
+    required_run_rate = (runs_left * 6) / (balls_left + 1e-9)  # Avoid division by zero
 
     # Create DataFrame for prediction
-    input_df = pd.DataFrame({'batting_team': [battingteam], 'bowling_team': [bowlingteam],
-                             'city': [city], 'runs_left': [runs_left], 'balls_left': [balls_left],
-                             'wickets': [wickets_left], 'total_runs_x': [target],
-                             'cur_run_rate': [current_run_rate], 'req_run_rate': [required_run_rate]})
+    input_df = pd.DataFrame({
+        'batting_team': [battingteam], 'bowling_team': [bowlingteam],
+        'city': [city], 'runs_left': [runs_left], 'balls_left': [balls_left],
+        'wickets': [wickets_left], 'total_runs_x': [target],
+        'cur_run_rate': [current_run_rate], 'req_run_rate': [required_run_rate]
+    })
 
     # Predict
     result = pipe.predict_proba(input_df)
     lossprob = result[0][0]
     winprob = result[0][1]
 
+    # Determine which team is the winner and which is the loser
+    if winprob > lossprob:
+        winner_team = battingteam
+        loser_team = bowlingteam
+        winner_prob = winprob
+        loser_prob = lossprob
+    else:
+        winner_team = bowlingteam
+        loser_team = battingteam
+        winner_prob = lossprob
+        loser_prob = winprob
+
     # Display results using Streamlit's markdown and HTML
     st.markdown(f"""
     <style>
-    .result-card {{
-        background-color: #f8f9fa;
+    .container-card {{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        margin-top: 20px;
+        background-color: #f0f8ff; /* Light blue background for visibility */
         border-radius: 10px;
         padding: 20px;
-        margin-bottom: 20px;
-        text-align: center;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }}
+    .result-card {{
+        background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent background */
+        border-radius: 10px;
+        padding: 20px;
+        margin: 10px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 270px;
+        height: 240px;
+        position: relative;
+        overflow: hidden;
+    }}
     .result-card img {{
-        width: 250px;
-        height: 225px;
-        margin-bottom: 20px;
+        width: 120px;
+        height: 90px;
+        margin-bottom: 15px;
     }}
     .result-card h2 {{
         color: #007bff;
-        font-size: 1.5rem;
-        margin-bottom: 10px;
+        font-size: 1.25rem;
+        margin-bottom: 5px;
     }}
     .result-card .progress-bar {{
-        height: 30px;
+        height: 40px;
         border-radius: 5px;
         text-align: center;
-        line-height: 30px;
+        line-height: 40px;
         color: #fff;
         font-weight: bold;
-        margin-top: 10px;
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        transition: width 2s ease;
+        width: 0%;
     }}
-    .batting {{
-        background-color: #28a745;
+    .winner {{
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.5); /* Green shadow for winner */
     }}
-    .bowling {{
-        background-color: #dc3545;
+    .winner .progress-bar {{
+        background-color: rgba(40, 167, 69, 0.7); /* Transparent green for winner */
+    }}
+    .loser {{
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.5); /* Red shadow for loser */
+    }}
+    .loser .progress-bar {{
+        background-color: rgba(220, 53, 69, 0.7); /* Transparent red for loser */
+    }}
+    .container-card:hover .winner .progress-bar {{
+        width: {round(winner_prob * 100)}%;
+    }}
+    .container-card:hover .loser .progress-bar {{
+        width: {round(loser_prob * 100)}%;
     }}
     </style>
-    <div class="result-card">
-        <img src="{teams[battingteam]}" alt="{battingteam} Logo">
-        <h2>{battingteam} Win Probability</h2>
-        <div class="progress-bar batting" style="width: {round(winprob * 100)}%;">
-            {round(winprob * 100)}%
+    <div class="container-card">
+        <div class="result-card winner">
+            <img src="{teams[winner_team]}" alt="{winner_team} Logo">
+            <h2>{winner_team} Win Probability</h2>
+            <div class="progress-bar">
+                {round(winner_prob * 100)}%
+            </div>
         </div>
-    </div>
-    <div class="result-card">
-        <img src="{teams[bowlingteam]}" alt="{bowlingteam} Logo">
-        <h2>{bowlingteam} Win Probability</h2>
-        <div class="progress-bar bowling" style="width: {round(lossprob * 100)}%;">
-            {round(lossprob * 100)}%
+        <div class="result-card loser">
+            <img src="{teams[loser_team]}" alt="{loser_team} Logo">
+            <h2>{loser_team} Win Probability</h2>
+            <div class="progress-bar">
+                {round(loser_prob * 100)}%
+            </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
