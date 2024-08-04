@@ -91,49 +91,48 @@ if st.button('Predict Probability'):
     <style>
     .container-card {{
         display: flex;
-        flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin: 0 auto; /* Center the container card */
+        flex-direction: column;
+        margin: 20px auto;
         background-color: #f0f8ff;
         border-radius: 10px;
-        padding: 30px;
+        padding: 20px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 500px; /* Increased width */
-        height: auto; /* Auto height */
+        width: 80%; /* Decreased width of container card */
     }}
     .result-card {{
         background-color: rgba(255, 255, 255, 0.7);
         border-radius: 10px;
         padding: 20px;
-        margin: 15px;
+        margin: 10px;
         text-align: center;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 450px; /* Increased card width */
-        height: 280px; /* Increased card height */
+        width: 400px; /* Increased width of result cards */
+        height: 240px;
         position: relative;
         overflow: hidden;
     }}
     .result-card img {{
-        width: 150px; /* Increased logo size */
-        height: 110px; /* Increased logo size */
+        width: 120px;
+        height: 90px;
         margin-bottom: 15px;
     }}
     .result-card h2 {{
         color: #007bff;
-        font-size: 1.5rem; /* Increased font size */
-        margin-bottom: 10px;
+        font-size: 1.25rem;
+        margin-bottom: 5px;
     }}
     .result-card .progress-bar {{
-        height: 50px; /* Increased height */
+        height: 40px;
         border-radius: 5px;
         text-align: center;
-        line-height: 50px; /* Adjusted line height */
+        line-height: 40px;
         color: #fff;
         font-weight: bold;
-        position: absolute;
+        position: relative;
         bottom: 10px;
-        left: 10px;
+        left: 5px;
         transition: width 2s ease;
         width: 0%;
     }}
