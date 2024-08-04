@@ -94,7 +94,7 @@ if st.button('Predict Probability'):
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        margin: 20px auto;
+        margin-top: 20px;
         background-color: #f0f8ff;
         border-radius: 10px;
         padding: 20px;
