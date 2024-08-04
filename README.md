@@ -3,6 +3,6 @@
 
 
 ### EdgeQuest prediction preview
-![Form](https://github.com/Rashid9226/EdgeQuest-IPL-Predictor/blob/main/images/EQ_1.PNG)
+![Match_Input](https://github.com/Rashid9226/EdgeQuest-IPL-Predictor/blob/main/images/EQ_1.PNG)
 <br>
-![Prediction Result](https://github.com/Rashid9226/EdgeQuest-IPL-Predictor/blob/main/images/EQ_2.PNG)
+![Prediction Proba](https://github.com/Rashid9226/EdgeQuest-IPL-Predictor/blob/main/images/EQ_2.PNG)
