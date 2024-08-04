@@ -26,7 +26,7 @@ cities = ['Hyderabad', 'Bangalore', 'Mumbai', 'Indore', 'Kolkata', 'Delhi',
 pipe = pickle.load(open('EdgeQuest.pkl', 'rb'))
 
 st.title('Edge-Quest: IPL Predictor')
-st.image('Tata IPL 2022.jpg', use_column_width=True)
+st.image('TataIPL.jpg', use_column_width=True)
 
 # Layout for team and city selection
 col1, col2 = st.columns(2)
@@ -91,42 +91,44 @@ if st.button('Predict Probability'):
     <style>
     .container-card {{
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        flex-direction: row;
-        margin-top: 20px;
-        background-color: #f0f8ff; /* Light blue background for visibility */
+        margin: 0 auto; /* Center the container card */
+        background-color: #f0f8ff;
         border-radius: 10px;
-        padding: 20px;
+        padding: 30px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 500px; /* Increased width */
+        height: auto; /* Auto height */
     }}
     .result-card {{
-        background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent background */
+        background-color: rgba(255, 255, 255, 0.7);
         border-radius: 10px;
         padding: 20px;
-        margin: 10px;
+        margin: 15px;
         text-align: center;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 270px;
-        height: 240px;
+        width: 450px; /* Increased card width */
+        height: 280px; /* Increased card height */
         position: relative;
         overflow: hidden;
     }}
     .result-card img {{
-        width: 120px;
-        height: 90px;
+        width: 150px; /* Increased logo size */
+        height: 110px; /* Increased logo size */
         margin-bottom: 15px;
     }}
     .result-card h2 {{
         color: #007bff;
-        font-size: 1.25rem;
-        margin-bottom: 5px;
+        font-size: 1.5rem; /* Increased font size */
+        margin-bottom: 10px;
     }}
     .result-card .progress-bar {{
-        height: 40px;
+        height: 50px; /* Increased height */
         border-radius: 5px;
         text-align: center;
-        line-height: 40px;
+        line-height: 50px; /* Adjusted line height */
         color: #fff;
         font-weight: bold;
         position: absolute;
@@ -136,16 +138,16 @@ if st.button('Predict Probability'):
         width: 0%;
     }}
     .winner {{
-        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.5); /* Green shadow for winner */
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.5);
     }}
     .winner .progress-bar {{
-        background-color: rgba(40, 167, 69, 0.7); /* Transparent green for winner */
+        background-color: rgba(40, 167, 69, 0.7);
     }}
     .loser {{
-        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.5); /* Red shadow for loser */
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.5);
     }}
     .loser .progress-bar {{
-        background-color: rgba(220, 53, 69, 0.7); /* Transparent red for loser */
+        background-color: rgba(220, 53, 69, 0.7);
     }}
     .container-card:hover .winner .progress-bar {{
         width: {round(winner_prob * 100)}%;
